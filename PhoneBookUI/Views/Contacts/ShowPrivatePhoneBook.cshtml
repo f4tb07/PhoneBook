@@ -1,0 +1,70 @@
+﻿@model List<PhoneBookUI.Models.Contact.ShowContacts>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">دفترچه تلفن شخصی</h3>
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>نام</th>
+                    <th>نام خانوادگی</th>
+                    <th>عنوان</th>
+                    <th>تصویر</th>
+                    <th>نمایش جزئیات</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.FirstName
+                        </td>
+                        <td>
+                            @item.LastName
+                        </td>
+                        <td>
+                            @item.Title
+                        </td>
+                        <td>
+                            @if (item.Image == null)
+                            {
+                                
+                                <div class="widget-user-image">
+                                    <img class="img-circle elevation-2" src="~/img/50.png" alt="" height="50" width="50">
+                                </div>
+                            }
+                            else
+                            {
+                                var base64 = Convert.ToBase64String(item.Image);
+                                var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+                                <div class="widget-user-image">
+                                    <img class="img-circle elevation-2" src="@imgsrc" alt="" height="50" width="50">
+                                </div>
+                              
+
+                            }
+
+                        </td>
+                        <td>
+                            <a asp-controller="Contacts" asp-action="ShowDetail" asp-route-id="@item.Id">جزیات</a>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+    <!-- /.card-body -->
+
+    <div class="card-footer">
+
+    </div>
+
+</div>

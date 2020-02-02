@@ -1,0 +1,106 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model PhoneBookUI.Models.ShowContactDetail
+@{
+    ViewData["Title"] = "ShowDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card card-widget widget-user-2 ">
+    <!-- Add the bg color to the header using any of the bg-* classes -->
+    <div class="widget-user-header bg-warning">
+       @if (Model.Image == null)
+         {
+
+            <div class="widget-user-image">
+                <img class="img-circle elevation-2" src="~/img/50.png" alt="" height="50" width="50">
+            </div>
+        }
+        else
+        {
+            var base64 = Convert.ToBase64String(Model.Image);
+            var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+            <div class="widget-user-image">
+                <img class="img-circle elevation-2" src="@imgsrc" alt="" height="50" width="50">
+            </div>
+
+
+        }
+
+        <!-- /.widget-user-image -->
+
+        <h3 class="widget-user-username">@Model.FullName()</h3>
+        <br />
+        <h5 class="widget-user-desc">@Model.Title</h5>
+        <br />
+        <h5 class="widget-user-desc">@Model.Note</h5>
+        <div class="row ">
+            <div class="col text-center">
+
+                <button class="btn btn-info col-1"> <a asp-controller="Contacts" asp-action="Update" asp-route-id="@Model.id">ویرایش</a></button>
+            </div>
+
+        </div>
+            
+     
+       
+    </div>
+    <div class="card-footer p-0">
+        <div class="card card-warning ">
+            <div class="card-header ">
+                <h3 class="card-title">اطلاعات مخاطب</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>نوع</th>
+                            <th>مقدار</th>
+                            <th>نمایش عمومی</th>
+                        </tr>
+                        @{int Count = 0;}
+                        @do
+                        {
+                            <tr>
+                                <td>
+                                    <select class="form-control select2 " disabled asp-for="ContactItems[Count].ItemType.Id" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                        @foreach (var TypeItem in Model.Type4Display)
+                                        {
+                                            if (Model.ContactItems[Count].ItemType.Id == TypeItem.Id)
+                                            {
+                                                <option  selected value="@TypeItem.Id">@TypeItem.Name</option>
+                                            }
+
+                                            else
+                                            {
+                                                <option  value="@TypeItem.Id">@TypeItem.Name</option>
+                                            }
+
+                                        }
+
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" disabled class="form-control" asp-for="ContactItems[Count].Value" />
+                                </td>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" disabled asp-for="ContactItems[Count].Scope">
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                            Count++;
+                        } while (Count < Model.ContactItems.Count);
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</div>
+

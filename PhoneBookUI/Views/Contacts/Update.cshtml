@@ -1,0 +1,147 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model PhoneBookUI.Models.Contact.UpdateContactModel
+@{ Layout = "_Layout";}
+    <div class="card card-primary">
+        <div class="card-header d-flex flex-row justify-content-between align-content-center">
+            <h3 class="card-title flex-grow-1 ">ویرایش اطلاعات مخاطب</h3>
+            @if (Model.CurrentImage == null)
+            {
+
+                <div class="widget-user-image">
+                    <img class="img-circle elevation-2" src="~/img/50.png" alt="" height="50" width="50">
+                </div>
+            }
+            else
+            {
+                var base64 = Convert.ToBase64String(Model.CurrentImage);
+                var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+                <div class="widget-user-image">
+                    <img class="img-circle elevation-2" src="@imgsrc" alt="" height="50" width="50">
+                </div>
+
+
+            }
+           
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form role="form" asp-controller="Contacts" asp-action="Update" enctype="multipart/form-data">
+            <div class="card-body">
+                <div class="form-group">
+                    <label>نام</label>
+                    <input type="text" asp-for="FirstName" class="form-control" placeholder="@Model.FirstName">
+                    <span class="text-danger" asp-validation-for="FirstName"></span>
+                </div>
+                <div class="form-group">
+                    <label>نام خانوادگی</label>
+                    <input type="text" class="form-control" asp-for="LastName" placeholder="@Model.LastName">
+                    <span class="text-danger" asp-validation-for="LastName"></span>
+                </div>
+                <div class="form-group">
+                    <label>عنوان</label>
+                    <input type="text" class="form-control" asp-for="Title" placeholder="@Model.Title">
+                    <span class="text-danger" asp-validation-for="Title"></span>
+                </div>
+                <div class="form-group">
+                    <label>یادداشت</label>
+                    <textarea class="form-control" rows="3" asp-for="Note" placeholder="@Model.Note"></textarea>
+                    <span class="text-danger" asp-validation-for="Note"></span>
+                </div>
+                <input type="hidden" asp-for="Id" />
+                
+                <div class="form-group">
+                    <label for="exampleInputFile"> انتخاب فایل تصویر</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" asp-for="Image" class="custom-file-input" id="exampleInputFile">
+                            <label class="custom-file-label" for="exampleInputFile">انتخاب فایل تصویر</label>
+                        </div>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="">آپلود عکس مخاطب</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">اطلاعات مخاطب</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>نوع</th>
+                                    <th>مقدار</th>
+                                    <th>نمایش عمومی</th>
+
+                                </tr>
+                                @{int Count = 0;}
+                                @do
+                                {
+                                    
+                                    <tr>
+                                        
+                                        <td>
+                                            <input type="hidden" asp-for="ContactItemsModel[Count].ContactItemId" />
+                                            <select class="form-control select2 " asp-for="ContactItemsModel[Count].TypeId" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                                @foreach (var item in Model.Type4Display)
+                                                {
+
+                                                    <option value="@item.Id">@item.Name</option>
+                                                   
+                                                }
+
+                                            </select>
+                                            <input type="hidden" asp-for="ContactItemsModel[Count].TypeId" />
+                                            <input type="hidden" asp-for="ContactItemsModel[Count].TypeName" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" asp-for="ContactItemsModel[Count].Value" placeholder="وارد کردن اطلاعات ...">
+                                            <span class="text-danger" asp-validation-for="ContactItemsModel[Count].Value"></span>
+                                        </td>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" asp-for="ContactItemsModel[Count].Scope">
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+                                    Count++;
+                                    } while (Count < Model.ContactItemsModel.Count);
+
+
+                                </tbody>
+                        </table> 
+                    </div>
+                    <!-- /.card-body -->
+
+                    
+                
+            </div>
+            
+
+
+            <div class="card-footer">
+                @for (int i = 0; i < Model.Type4Display.Count; i++)
+                {
+                    <input type="hidden" asp-for="Type4Display[i].Id" />
+                    <input type="hidden" asp-for="Type4Display[i].Name" />
+                }
+                
+                <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+                <button type="submit" class="btn btn-primary">انصراف</button>
+            </div>
+        </form>
+    </div>
+@*<form asp-controller="Contacts" asp-action="Add" method="post">
+    <input type="text" asp-for="FirstName" />
+    <input type="text" asp-for="LastName" />
+    <input type="text" asp-for="Title" />
+    <input type="text" asp-for="Note" />
+    <input type="file" asp-for="Image" />
+</form>*@
+
