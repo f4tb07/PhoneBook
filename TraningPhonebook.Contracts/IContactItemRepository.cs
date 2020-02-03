@@ -5,7 +5,7 @@ namespace TraningPhonebook.Contracts
 {
     public interface IContactItemRepository : IBaseRpository<ContactItem>
     {
-
+        ContactItem FindById(int ContactItemId);
     }
 
 }

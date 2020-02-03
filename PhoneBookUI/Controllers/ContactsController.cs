@@ -13,13 +13,15 @@ namespace PhoneBookUI.Controllers
     {
         private readonly IContactTypeRepository Types;
         private readonly IContactRepository ContactsRep;
+        private readonly IContactItemRepository ContactItemsRep;
         private ShowContactDetail SelectedContactModel;
         private int SelectedContactId;
 
-        public ContactsController(IContactTypeRepository _ContactType,IContactRepository _ContactsRep )
+        public ContactsController(IContactTypeRepository _ContactType,IContactRepository _ContactsRep,IContactItemRepository _ContactItemRep )
         {
             Types = _ContactType;
             ContactsRep = _ContactsRep;
+            ContactItemsRep = _ContactItemRep;
         }
 
         public IActionResult Add()
@@ -124,9 +126,10 @@ namespace PhoneBookUI.Controllers
                 UpdateModel.Title = FindedContact.Title;
                 
                 UpdateModel.Type4Display = Types.GetAll().ToList();
+                UpdateModel.ContactItemsModel = new List<UpdateContacrItemModel>();
             foreach (var item in FindedContact.ContactItems)
             {
-                UpdateModel.ContactItemsModel = new List<UpdateContacrItemModel>();
+                
                 UpdateModel.ContactItemsModel.Add(new UpdateContacrItemModel
                 {
                     ContactItemId=item.Id,
@@ -194,7 +197,13 @@ namespace PhoneBookUI.Controllers
             // return View("ShowPrivatePhoneBook");
             return RedirectToAction("ShowPrivatePhoneBook");
         }
-
+        public IActionResult DeleteContactItem(int id)
+        {
+            var FindedContactItem = ContactItemsRep.FindById(id);
+            int RelatedContactId = FindedContactItem.RelatedContact.Id;
+            ContactItemsRep.Delete(FindedContactItem);
+            return RedirectToAction("Update",new { id = RelatedContactId });
+        }
 
         private bool CheckFullNameWithTitleIsEmpty(AddContactModel Contact4Check)
         {

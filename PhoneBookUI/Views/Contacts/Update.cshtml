@@ -82,34 +82,40 @@
                                 @do
                                 {
                                     
-                                    <tr>
-                                        
-                                        <td>
-                                            <input type="hidden" asp-for="ContactItemsModel[Count].ContactItemId" />
-                                            <select class="form-control select2 " asp-for="ContactItemsModel[Count].TypeId" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                                                @foreach (var item in Model.Type4Display)
-                                                {
+                            <tr>
 
-                                                    <option value="@item.Id">@item.Name</option>
-                                                   
-                                                }
+                                <td>
+                                    <input type="hidden" asp-for="ContactItemsModel[Count].ContactItemId" />
+                                    <select class="form-control select2 " asp-for="ContactItemsModel[Count].TypeId" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                        @foreach (var item in Model.Type4Display)
+                                        {
 
-                                            </select>
-                                            <input type="hidden" asp-for="ContactItemsModel[Count].TypeId" />
-                                            <input type="hidden" asp-for="ContactItemsModel[Count].TypeName" />
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control" asp-for="ContactItemsModel[Count].Value" placeholder="وارد کردن اطلاعات ...">
-                                            <span class="text-danger" asp-validation-for="ContactItemsModel[Count].Value"></span>
-                                        </td>
-                                        <td>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" asp-for="ContactItemsModel[Count].Scope">
-                                            </div>
+                                            <option value="@item.Id">@item.Name</option>
 
-                                        </td>
+                                        }
 
-                                    </tr>
+                                    </select>
+                                    <input type="hidden" asp-for="ContactItemsModel[Count].TypeId" />
+                                    <input type="hidden" asp-for="ContactItemsModel[Count].TypeName" />
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" asp-for="ContactItemsModel[Count].Value" placeholder="وارد کردن اطلاعات ...">
+                                    <span class="text-danger" asp-validation-for="ContactItemsModel[Count].Value"></span>
+                                </td>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" asp-for="ContactItemsModel[Count].Scope">
+                                    </div>
+
+                                </td>
+                                <td>
+                                    <div>
+                                        <a asp-controller="Contacts" asp-action="DeleteContactItem" asp-route-id="@Model.ContactItemsModel[Count].ContactItemId">حذف</a>
+                                    </div>
+
+                                </td>
+
+                            </tr>
                                     Count++;
                                     } while (Count < Model.ContactItemsModel.Count);
 

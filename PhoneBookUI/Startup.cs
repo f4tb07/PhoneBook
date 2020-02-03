@@ -35,7 +35,8 @@ namespace PhoneBookUI
             //services.AddScoped<IBaseRpository, BaseRepository>();
             services.AddScoped<IContactRepository, ContactRepository>();
             services.AddScoped<IContactTypeRepository, ContactTypeRepository>();
-           // services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IContactItemRepository, ContactItemsRepository>();
+            // services.AddScoped<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
