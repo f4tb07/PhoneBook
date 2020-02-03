@@ -173,6 +173,28 @@ namespace PhoneBookUI.Controllers
             return View(model4disply);
         }
 
+        public IActionResult ReadyForDelete(int id)
+        {
+            SelectedContactModel = new ShowContactDetail();
+            var FindedContact = ContactsRep.FindById(id);
+            SelectedContactModel.id = id;
+            SelectedContactModel.ContactItems = FindedContact.ContactItems;
+            SelectedContactModel.FirstName = FindedContact.FirstName;
+            SelectedContactModel.LastName = FindedContact.LastName;
+            SelectedContactModel.Note = FindedContact.Note;
+            SelectedContactModel.Title = FindedContact.Title;
+            SelectedContactModel.Image = FindedContact.Image;
+            SelectedContactModel.Type4Display = Types.GetAll().ToList();
+            return View("Delete",SelectedContactModel);
+        }
+        public IActionResult Delete(int id)
+        {
+            var FindedContact = ContactsRep.FindById(id);
+            ContactsRep.Delete(FindedContact);
+            // return View("ShowPrivatePhoneBook");
+            return RedirectToAction("ShowPrivatePhoneBook");
+        }
+
 
         private bool CheckFullNameWithTitleIsEmpty(AddContactModel Contact4Check)
         {
